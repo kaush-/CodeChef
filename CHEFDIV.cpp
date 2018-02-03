@@ -1,0 +1,134 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+            long long int a[1000500]={0},i,j,x,y,temp,z;
+            vector<long long int>b;
+            a[1]=1;
+            for(i=2;i*i<=1000050;i++)
+            {
+                    if(a[i]==0)
+                    {
+                            for(j=i*2;j<=1000050;j+=i)
+                            {
+                                    if(a[j]==0)
+                                            a[j]=i;
+                            }
+                    }
+            }
+            for(i=2;i<=1000050;i++)
+            {
+                    if(a[i]==0)
+                            b.push_back(i);
+            }
+            cin>>x>>y;
+            for(i=0;i<b.size();i++)
+            {
+                    if(b[i]<=sqrt(y))
+                            temp=b[i];
+                    else
+		    break;
+    }
+    vector<long long int>c[y-x+1];
+    z=y-x+1;
+    vector<pair<long long int,long long int> >e;
+    for(i=x;i<=y;i++)
+    {
+            e.push_back(make_pair(i%z,i));
+    }
+    sort(e.begin(),e.end());
+    for(i=0;i<b.size();i++)
+    {
+            if(b[i]<=temp)
+            {
+                    if(x%b[i]!=0)
+                            j=x+(b[i]-x%b[i]);
+                    else
+                            j=x;
+                    for(;j<=y;j+=b[i])
+                    {
+                            c[j%z].push_back(b[i]);
+            
+                    }
+            }
+            else
+		    break;
+    }
+
+    long long int sum=0;
+    for(i=0;i<e.size();i++)
+    {
+            set<pair<long long int,long long int> >d;
+            long long int m,n,p,count=0,prod=1,flag=0;
+            m=e[i].second;
+            p=m;
+            for(j=0;j<c[i].size();j++)
+            {
+                    n=c[i][j];
+                    z=0;
+		    while(m%n==0)
+		    {
+		            m=m/n;
+		            count++;
+		    }
+		    m=p;
+		    d.insert(make_pair(count,n));
+		    count=0;
+		    z++;
+	    }
+	    m=p;
+	    if(d.size()==0)
+	    {
+	            flag=1;
+	            sum+=2;
+	    }
+	    if(flag==0)
+	    {
+	            set<pair<long long int,long long int> >::iterator it;
+	            for(it=d.begin();it!=d.end();it++)
+	            {
+	                    n=it->first;
+	                    p=it->second;
+			    while(n>0)
+			    {
+			            m=m/p;
+			            n--;
+			    }
+		    }
+		    if(m>1)
+			    d.insert(make_pair(1,m));
+		    count=0;
+		    while(!d.empty())
+		    {
+		            prod=1;
+		            for(it=d.begin();it!=d.end();it++)
+		            {
+		                    m=it->first;
+		                    prod=prod*(m+1);
+		            }
+		            if(count==1)
+		                    sum+=prod-1;
+		            else
+		                    sum+=prod;
+		            prod=1;
+		            count++;
+		            it=d.end();
+		            it--;
+		            m=it->first;
+		            n=it->second;
+		            if((m-1)>0)
+		            {
+		                    m--;
+		                    d.erase(it);
+		                    d.insert(make_pair(m,n));
+		            }
+		            else
+		            {
+		                    d.erase(it);
+		            }
+		    }
+		    sum+=1;
+	    }		
+    }
+    cout<<sum<<endl;	
+}
